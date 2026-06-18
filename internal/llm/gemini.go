@@ -1,35 +1,20 @@
-package api
+package llm
 
 import (
-	"net/http"
-
-	"ai-sre-agent/internal/llm"
-	"ai-sre-agent/internal/structs"
-
-	"github.com/gin-gonic/gin"
+	"context"
+	"fmt"
 )
 
-func ChatHandler(c *gin.Context) {
-
-	var req structs.ChatRequest
-
-	if err := c.ShouldBindJSON(&req); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "invalid request body",
-		})
-		return
+// Ask sends a message to the Gemini AI and returns the response
+func Ask(message string) (string, error) {
+	if message == "" {
+		return "", fmt.Errorf("message cannot be empty")
 	}
 
-	answer, err := llm.Ask(req.Message)
+	// TODO: Implement actual Gemini API call
+	// This is a placeholder implementation
+	ctx := context.Background()
+	_ = ctx // Use context if needed in actual implementation
 
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"error": err.Error(),
-		})
-		return
-	}
-
-	c.JSON(http.StatusOK, structs.ChatResponse{
-		Answer: answer,
-	})
+	return fmt.Sprintf("Response to: %s", message), nil
 }

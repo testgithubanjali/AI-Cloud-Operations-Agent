@@ -4,13 +4,22 @@ import (
 	"net/http"
 
 	"ai-sre-agent/internal/llm"
+	"ai-sre-agent/internal/structs"
 
 	"github.com/gin-gonic/gin"
 )
 
 func ChatHandler(c *gin.Context) {
+	var req structs.ChatRequest
 
-	answer, err := llm.Ask("Hello")
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "invalid request body",
+		})
+		return
+	}
+
+	answer, err := llm.Ask(req.Message)
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
@@ -19,7 +28,7 @@ func ChatHandler(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{
-		"answer": answer,
+	c.JSON(http.StatusOK, structs.ChatResponse{
+		Answer: answer,
 	})
 }
