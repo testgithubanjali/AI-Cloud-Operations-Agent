@@ -1,9 +1,13 @@
 package api
 
-type ChatRequest struct {
-	Message string `json:"message"`
-}
+import (
+	"net/http"
 
-type ChatResponse struct {
-	Answer string `json:"answer"`
+	"github.com/gin-gonic/gin"
+)
+
+func ChatHandler(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H{
+		"message": "Chat endpoint working",
+	})
 }

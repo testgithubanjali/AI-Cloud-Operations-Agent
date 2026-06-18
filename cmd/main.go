@@ -5,25 +5,19 @@ import (
 
 	"ai-sre-agent/internal/api"
 
-	"github.com/gofiber/fiber/v2"
+	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 )
 
 func main() {
-
-	// Load .env file
 	err := godotenv.Load()
 	if err != nil {
 		log.Println("No .env file found")
 	}
 
-	// Create Fiber app
-	app := fiber.New()
+	router := gin.Default()
 
-	// Register routes
-	app.Post("/chat", api.ChatHandler)
+	router.POST("/chat", api.ChatHandler)
 
-	// Start server
-	log.Println("Server running on port 3000")
-	log.Fatal(app.Listen(":3000"))
+	router.Run(":3000")
 }
