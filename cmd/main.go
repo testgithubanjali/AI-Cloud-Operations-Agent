@@ -10,6 +10,7 @@ import (
 )
 
 func main() {
+
 	err := godotenv.Load()
 	if err != nil {
 		log.Println("No .env file found")
@@ -18,8 +19,11 @@ func main() {
 	router := gin.Default()
 
 	router.POST("/chat", api.ChatHandler)
-	answer, _ := llm.Ask("Hello")
-	println(answer)
 
-	router.Run(":3000")
+	log.Println("Server running on :3000")
+
+	err = router.Run(":3000")
+	if err != nil {
+		log.Fatal(err)
+	}
 }

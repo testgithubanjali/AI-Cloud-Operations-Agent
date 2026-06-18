@@ -10,7 +10,14 @@ import (
 
 func ChatHandler(c *gin.Context) {
 
-	answer, _ := llm.Ask("Hello")
+	answer, err := llm.Ask("Hello")
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
 
 	c.JSON(http.StatusOK, gin.H{
 		"answer": answer,
