@@ -2,19 +2,36 @@ package llm
 
 import (
 	"context"
-	"fmt"
+	"os"
+
+	"google.golang.org/genai"
 )
 
-// Ask sends a message to the Gemini AI and returns the response
-func Ask(message string) (string, error) {
-	if message == "" {
-		return "", fmt.Errorf("message cannot be empty")
+func Ask(prompt string) (string, error) {
+
+	apiKey := os.Getenv("GEMINI_API_KEY")
+
+	client, err := genai.NewClient(
+		context.Background(),
+		&genai.ClientConfig{
+			APIKey: apiKey,
+		},
+	)
+
+	if err != nil {
+		return "", err
 	}
 
-	// TODO: Implement actual Gemini API call
-	// This is a placeholder implementation
-	ctx := context.Background()
-	_ = ctx // Use context if needed in actual implementation
+	resp, err := client.Models.GenerateContent(
+		context.Background(),
+		"gemini-2.5-flash",
+		genai.Text(prompt),
+		nil,
+	)
 
-	return fmt.Sprintf("Response to: %s", message), nil
+	if err != nil {
+		return "", err
+	}
+
+	return resp.Text(), nil
 }
