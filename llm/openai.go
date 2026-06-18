@@ -1,0 +1,1 @@
+func Ask(prompt string) (string, error)
