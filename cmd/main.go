@@ -18,6 +18,8 @@ func main() {
 	router := gin.Default()
 
 	router.POST("/chat", api.ChatHandler)
+	answer, _ := llm.Ask("Hello")
+	println(answer)
 
 	router.Run(":3000")
 }
