@@ -15,7 +15,7 @@ func AuthMiddleware() gin.HandlerFunc {
 
 		if authHeader == "" {
 			c.JSON(http.StatusUnauthorized, gin.H{
-				"error": "token missing",
+				"error": "authorization header missing",
 			})
 			c.Abort()
 			return
@@ -24,6 +24,11 @@ func AuthMiddleware() gin.HandlerFunc {
 		tokenString := strings.TrimPrefix(authHeader, "Bearer ")
 
 		token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+
+			if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+				return nil, jwt.ErrTokenSignatureInvalid
+			}
+
 			return SecretKey, nil
 		})
 
