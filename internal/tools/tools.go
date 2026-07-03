@@ -4,6 +4,11 @@ type Tool struct {
 	Name        string
 	Description string
 }
+type ToolCall struct {
+	Tool      string `json:"tool"`
+	Namespace string `json:"namespace,omitempty"`
+	Pod       string `json:"pod,omitempty"`
+}
 
 var AvailableTools = []Tool{
 	{
