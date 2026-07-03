@@ -3,7 +3,7 @@ package main
 import (
 	"log"
 
-	"ai-sre-agent/internal/api"
+	"ai-sre-agent/internal/routes"
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
@@ -15,14 +15,16 @@ func main() {
 	if err != nil {
 		log.Println("No .env file found")
 	}
+	r := gin.Default()
 
-	router := gin.Default()
+	routes.AuthRoutes(r)
+	routes.ChatRoutes(r)
 
-	router.POST("/chat", api.ChatHandler)
+	r.Run(":8080")
 
-	log.Println("Server running on :3000")
+	log.Println("Server running on :8080")
 
-	err = router.Run(":3000")
+	r.Run(":8080")
 	if err != nil {
 		log.Fatal(err)
 	}
