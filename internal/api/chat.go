@@ -3,7 +3,7 @@ package api
 import (
 	"net/http"
 
-	"ai-sre-agent/internal/llm"
+	"ai-sre-agent/internal/agent"
 	"ai-sre-agent/internal/structs"
 
 	"github.com/gin-gonic/gin"
@@ -19,7 +19,7 @@ func ChatHandler(c *gin.Context) {
 		return
 	}
 
-	answer, err := llm.Ask(req.Message)
+	answer, err := agent.Process(req.Message)
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
