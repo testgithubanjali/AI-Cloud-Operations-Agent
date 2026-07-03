@@ -5,15 +5,20 @@ func ExecuteTool(call ToolCall) string {
 	switch call.Tool {
 
 	case "get_pods":
-		return "Mock Result:\npostgres-0\npostgres-1"
+		return `postgres-0
+postgres-1
+redis-0`
 
 	case "describe_pod":
-		return "Mock Result:\nPod is Running"
+		return `Name: postgres-0
+Status: Running
+Ready: True
+Restarts: 0`
 
 	case "get_logs":
-		return "Mock Result:\nApplication started successfully."
+		return `Application started successfully`
 
 	default:
-		return "Unknown tool requested."
+		return "Unknown tool"
 	}
 }
