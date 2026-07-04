@@ -13,4 +13,5 @@ func TestRoutes(r *gin.Engine) {
 	r.GET("/test/pods/:name", api.DescribePod)
 	r.GET("/test/logs/:name", api.GetLogs)
 	r.GET("/test/events", api.GetEvents)
+	r.GET("/test/metrics", api.GetMetrics)
 }
