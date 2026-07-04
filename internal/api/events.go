@@ -10,7 +10,7 @@ import (
 
 func GetEvents(c *gin.Context) {
 
-	events, err := tools.GetEvents("default")
+	events, err := tools.GetPodEvents("default", "nginx-pod")
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": err.Error(),
