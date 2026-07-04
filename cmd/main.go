@@ -22,9 +22,9 @@ func main() {
 	routes.ChatRoutes(r)
 	routes.TestRoutes(r)
 
-	log.Println("Server running on :8080")
+	log.Println("Server running on :8081")
 
-	if err := r.Run(":8080"); err != nil {
+	if err := r.Run(":8081"); err != nil {
 		log.Fatal(err)
 	}
 }
