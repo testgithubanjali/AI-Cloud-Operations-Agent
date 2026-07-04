@@ -10,4 +10,5 @@ func TestRoutes(r *gin.Engine) {
 	r.GET("/test", api.TestConnection)
 
 	r.GET("/test/pods", api.GetPods)
+	r.GET("/test/pods/:name", api.DescribePod)
 }
