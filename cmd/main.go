@@ -20,6 +20,7 @@ func main() {
 
 	routes.AuthRoutes(r)
 	routes.ChatRoutes(r)
+	routes.TestRoutes(r)
 
 	log.Println("Server running on :8080")
 
