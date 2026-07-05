@@ -1,27 +1,42 @@
-package main
+package llm
 
 import (
+	"context"
 	"fmt"
-	"log"
+	"os"
 
-	"ai-sre-agent/internal/llm"
+	"github.com/joho/godotenv"
+	"google.golang.org/genai"
 )
 
-func main() {
+func GenerateEmbedding(text string) ([]float32, error) {
 
-	vector, err := llm.GenerateEmbedding(
-		"Kubernetes Deployment"
+	// Load .env file
+	err := godotenv.Load()
+	if err != nil {
+		return nil, fmt.Errorf("failed to load .env: %v", err)
+	}
+
+	apiKey := os.Getenv("GEMINI_API_KEY")
+
+	if apiKey == "" {
+		return nil, fmt.Errorf("GEMINI_API_KEY is empty")
+	}
+
+	client, err := genai.NewClient(
+		context.Background(),
+		&genai.ClientConfig{
+			APIKey: apiKey,
+		},
 	)
 
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
 
-	fmt.Println("Embedding Dimension:", len(vector))
+	// We'll add the EmbedContent API call next
+	_ = client
+	_ = text
 
-	fmt.Println("First 10 values:")
-
-	for i := 0; i < 10 && i < len(vector); i++ {
-		fmt.Printf("%.5f\n", vector[i])
-	}
+	return nil, nil
 }
