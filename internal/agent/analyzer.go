@@ -1,6 +1,7 @@
 package agent
 
 import (
+	"fmt"
 	"strings"
 
 	"ai-sre-agent/internal/llm"
@@ -93,6 +94,11 @@ Useful kubectl Commands:
 • kubectl logs <pod-name> --previous
 • kubectl top pod <pod-name>
 `
+
+	// 👇 Debug: Print the complete prompt sent to Gemini
+	fmt.Println("========== PROMPT ==========")
+	fmt.Println(prompt)
+	fmt.Println("============================")
 
 	answer, err := llm.Ask(prompt)
 	if err != nil {
