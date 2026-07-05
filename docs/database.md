@@ -1,25 +1,9 @@
-# Deployment Guide
+# PostgreSQL
 
-Applications are deployed to Kubernetes using Deployments.
+PostgreSQL runs as a StatefulSet.
 
-## Deploy
+Persistent Volumes store database files.
 
-```bash
-kubectl apply -f deployment.yaml
-```
+Daily backups run at 2 AM.
 
-## Rolling Update
-
-Deployments use rolling updates by default.
-
-## Rollback
-
-```bash
-kubectl rollout undo deployment/<deployment-name>
-```
-
-Always verify the rollout:
-
-```bash
-kubectl rollout status deployment/<deployment-name>
-```
+Database credentials should be stored in Kubernetes Secrets.
