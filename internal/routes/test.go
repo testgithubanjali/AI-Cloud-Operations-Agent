@@ -14,4 +14,7 @@ func TestRoutes(r *gin.Engine) {
 	r.GET("/test/logs/:name", api.GetLogs)
 	r.GET("/test/events", api.GetEvents)
 	r.GET("/test/metrics", api.GetMetrics)
+	r.GET("/test/planner", api.TestPlanner)
+	r.GET("/test/executor", api.TestExecutor)
+	r.GET("/test/analyzer", api.TestAnalyzer)
 }
