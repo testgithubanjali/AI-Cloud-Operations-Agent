@@ -4,16 +4,19 @@ import (
 	"ai-sre-agent/internal/tools"
 )
 
-func ExecutePlan(plan []tools.ToolCall) string {
+func ExecutePlan(plan []tools.ToolCall) []ToolResult {
 
-	var allResults string
+	var results []ToolResult
 
 	for _, tool := range plan {
 
-		result := tools.ExecuteTool(tool)
+		output := tools.ExecuteTool(tool)
 
-		allResults += result + "\n\n"
+		results = append(results, ToolResult{
+			Tool:   tool.Tool,
+			Output: output,
+		})
 	}
 
-	return allResults
+	return results
 }
