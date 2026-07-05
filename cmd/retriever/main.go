@@ -39,7 +39,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	fmt.Println("Top Results\n")
+	fmt.Println("Top Results")
 
 	for _, result := range results {
 
