@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"time"
 
 	"github.com/joho/godotenv"
 	promapi "github.com/prometheus/client_golang/api"
@@ -29,7 +30,7 @@ func QueryPrometheus(query string) (string, error) {
 	result, warnings, err := api.Query(
 		context.Background(),
 		query,
-		v1.Now(),
+		time.Now(),
 	)
 
 	if err != nil {
