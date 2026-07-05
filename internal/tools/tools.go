@@ -11,6 +11,8 @@ type ToolCall struct {
 	Namespace string `json:"namespace,omitempty"`
 
 	Pod string `json:"pod,omitempty"`
+
+	Query string `json:"query,omitempty"`
 }
 
 var AvailableTools = []Tool{
@@ -29,5 +31,9 @@ var AvailableTools = []Tool{
 	{
 		Name:        "get_metrics",
 		Description: "Get CPU and memory usage of Kubernetes pods",
+	},
+	{
+		Name:        "query_prometheus",
+		Description: "Execute PromQL query on Prometheus",
 	},
 }

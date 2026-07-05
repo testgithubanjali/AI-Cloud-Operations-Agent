@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 
+	"ai-sre-agent/internal/rag"
 	"ai-sre-agent/internal/routes"
 
 	"github.com/gin-gonic/gin"
@@ -11,9 +12,14 @@ import (
 
 func main() {
 
-	err := godotenv.Load()
-	if err != nil {
+	// Load .env
+	if err := godotenv.Load(); err != nil {
 		log.Println("No .env file found")
+	}
+
+	// Initialize RAG knowledge base
+	if err := rag.InitializeKnowledgeBase(); err != nil {
+		log.Fatal(err)
 	}
 
 	r := gin.Default()

@@ -37,7 +37,7 @@ Rules:
 - Do not explain anything.
 - Do not use Markdown.
 
-Example:
+Examples:
 
 User:
 Why is nginx-pod restarting?
@@ -56,6 +56,30 @@ Return:
   {
     "tool":"get_metrics",
     "pod":"nginx-pod"
+  }
+]
+
+User:
+Show CPU usage
+
+Return:
+
+[
+  {
+    "tool":"query_prometheus",
+    "query":"sum(rate(container_cpu_usage_seconds_total[5m]))"
+  }
+]
+
+User:
+Show top CPU consuming pods
+
+Return:
+
+[
+  {
+    "tool":"query_prometheus",
+    "query":"topk(5,sum(rate(container_cpu_usage_seconds_total[5m])) by (pod))"
   }
 ]
 

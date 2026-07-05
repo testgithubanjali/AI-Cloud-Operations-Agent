@@ -65,6 +65,14 @@ func ExecuteTool(call ToolCall) (string, error) {
 		}
 
 		return result, nil
+	case "query_prometheus":
+
+		result, err := QueryPrometheus(call.Query)
+		if err != nil {
+			return "", err
+		}
+
+		return result, nil
 
 	default:
 		return "", fmt.Errorf("unknown tool: %s", call.Tool)
