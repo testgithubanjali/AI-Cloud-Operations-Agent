@@ -27,6 +27,7 @@ func TestAnalyzer(c *gin.Context) {
 
 	answer, err := agent.Analyze(
 		"Why is nginx-pod restarting?",
+		"",
 		results,
 	)
 
