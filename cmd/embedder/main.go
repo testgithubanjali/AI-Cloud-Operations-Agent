@@ -4,22 +4,24 @@ import (
 	"fmt"
 	"log"
 
-	"ai-sre-agent/internal/rag"
+	"ai-sre-agent/internal/llm"
 )
 
 func main() {
 
-	docs, err := rag.LoadDocuments("docs")
+	vector, err := llm.GenerateEmbedding(
+		"Kubernetes Deployment"
+	)
+
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	chunks := rag.ChunkDocuments(docs, 300)
+	fmt.Println("Embedding Dimension:", len(vector))
 
-	chunks, err = rag.EmbedChunks(chunks)
-	if err != nil {
-		log.Fatal(err)
+	fmt.Println("First 10 values:")
+
+	for i := 0; i < 10 && i < len(vector); i++ {
+		fmt.Printf("%.5f\n", vector[i])
 	}
-
-	fmt.Println("Embedded Chunks:", len(chunks))
 }

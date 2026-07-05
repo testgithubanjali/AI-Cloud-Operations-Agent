@@ -2,6 +2,7 @@ package llm
 
 import (
 	"context"
+	"fmt"
 	"os"
 
 	"google.golang.org/genai"
@@ -17,14 +18,23 @@ func GenerateEmbedding(text string) ([]float32, error) {
 			APIKey: apiKey,
 		},
 	)
-
 	if err != nil {
 		return nil, err
 	}
 
-	// We'll implement the API call in the next step.
-	_ = client
-	_ = text
+	resp, err := client.Models.EmbedContent(
+		context.Background(),
+		"gemini-embedding-001",
+		genai.Text(text),
+		nil,
+	)
+	if err != nil {
+		return nil, err
+	}
 
-	return nil, nil
+	if resp == nil || len(resp.Embeddings) == 0 {
+		return nil, fmt.Errorf("no embedding returned")
+	}
+
+	return resp.Embeddings[0].Values, nil
 }
