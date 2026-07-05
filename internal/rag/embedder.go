@@ -6,15 +6,12 @@ func EmbedChunks(chunks []Chunk) ([]Chunk, error) {
 
 	for i := range chunks {
 
-		vector, err := llm.GenerateEmbedding(
-			chunks[i].Content,
-		)
-
+		embedding, err := llm.GenerateEmbedding(chunks[i].Content)
 		if err != nil {
 			return nil, err
 		}
 
-		chunks[i].Embedding = vector
+		chunks[i].Embedding = embedding
 	}
 
 	return chunks, nil
