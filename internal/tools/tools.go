@@ -3,6 +3,7 @@ package tools
 type Tool struct {
 	Name        string
 	Description string
+	Example     string
 }
 type ToolCall struct {
 	Tool string `json:"tool"`

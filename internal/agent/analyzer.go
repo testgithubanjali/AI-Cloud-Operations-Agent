@@ -12,10 +12,17 @@ func Analyze(userQuestion string, results []ToolResult) (string, error) {
 
 	for _, result := range results {
 
+		report.WriteString("========== ")
 		report.WriteString(result.Tool)
-		report.WriteString("\n")
+		report.WriteString(" ==========\n")
 
-		report.WriteString(result.Output)
+		if result.Successful {
+			report.WriteString(result.Output)
+		} else {
+			report.WriteString("ERROR: ")
+			report.WriteString(result.Error)
+		}
+
 		report.WriteString("\n\n")
 	}
 
@@ -30,17 +37,42 @@ Investigation Results:
 
 ` + report.String() + `
 
-Analyze everything carefully.
+Your job is to perform a professional Root Cause Analysis.
 
-Return:
+Rules:
 
-1. Root Cause
+- Never invent Kubernetes information.
+- Only use the investigation results.
+- If information is missing, clearly say that more investigation is needed.
+- If multiple tools provide conflicting information, explain the conflict instead of guessing.
+- Keep the answer concise.
 
-2. Evidence
+Return exactly in this format:
 
-3. Recommended Fix
+🚨 Incident Analysis
 
-Keep the answer concise.
+Severity:
+(LOW / MEDIUM / HIGH)
+
+Root Cause:
+(Explain the most likely reason.)
+
+Evidence:
+• Bullet point
+• Bullet point
+
+Impact:
+(Explain what could happen.)
+
+Recommended Fix:
+• Bullet point
+• Bullet point
+
+Useful kubectl Commands:
+• If the pod name is known, use the actual pod name.
+• kubectl describe pod <pod-name>
+• kubectl logs <pod-name> --previous
+• kubectl top pod <pod-name>
 `
 
 	answer, err := llm.Ask(prompt)

@@ -1,6 +1,8 @@
 package tools
 
-func ExecuteTool(call ToolCall) string {
+import "fmt"
+
+func ExecuteTool(call ToolCall) (string, error) {
 
 	switch call.Tool {
 
@@ -8,7 +10,7 @@ func ExecuteTool(call ToolCall) string {
 
 		pods, err := GetPods("default")
 		if err != nil {
-			return err.Error()
+			return "", err
 		}
 
 		result := ""
@@ -17,36 +19,54 @@ func ExecuteTool(call ToolCall) string {
 			result += pod + "\n"
 		}
 
-		return result
+		return result, nil
 
 	case "describe_pod":
 
 		result, err := DescribePod("default", call.Pod)
 		if err != nil {
-			return err.Error()
+			return "", err
 		}
 
-		return result
+		return result, nil
 
 	case "get_logs":
 
-		result, err := GetLogs("default", call.Pod)
+		// First try current container logs
+		result, err := GetLogs(
+			"default",
+			call.Pod,
+			100,
+			false,
+		)
+
+		// If that fails, try previous container logs
 		if err != nil {
-			return err.Error()
+
+			result, err = GetLogs(
+				"default",
+				call.Pod,
+				100,
+				true,
+			)
+
+			if err != nil {
+				return "", err
+			}
 		}
 
-		return result
+		return result, nil
 
 	case "get_metrics":
 
 		result, err := GetPodMetrics("default")
 		if err != nil {
-			return err.Error()
+			return "", err
 		}
 
-		return result
+		return result, nil
 
 	default:
-		return "Unknown tool"
+		return "", fmt.Errorf("unknown tool: %s", call.Tool)
 	}
 }

@@ -12,7 +12,7 @@ func GetLogs(c *gin.Context) {
 
 	podName := c.Param("name")
 
-	logs, err := tools.GetLogs("default", podName)
+	logs, err := tools.GetLogs("default", podName, 100, false)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": err.Error(),

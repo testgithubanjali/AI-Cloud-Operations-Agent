@@ -1,7 +1,8 @@
 package agent
 
 type ToolResult struct {
-	Tool   string
-	Output string
-	Error  string
+	Tool       string
+	Output     string
+	Successful bool
+	Error      string
 }
