@@ -10,6 +10,7 @@ func Analyze(userQuestion string, context string, results []ToolResult) (string,
 
 	var report strings.Builder
 
+	// Build investigation report
 	for _, result := range results {
 
 		report.WriteString("========== ")
@@ -25,6 +26,17 @@ func Analyze(userQuestion string, context string, results []ToolResult) (string,
 
 		report.WriteString("\n\n")
 	}
+
+	// If no tools were executed
+	if report.Len() == 0 {
+		report.WriteString("No Kubernetes tools were executed because the question did not require live cluster investigation.\n\n")
+	}
+
+	// If no documentation was found
+	if strings.TrimSpace(context) == "" {
+		context = "No relevant internal documentation was found."
+	}
+
 	prompt := `
 You are an expert Kubernetes Site Reliability Engineer.
 
@@ -51,28 +63,35 @@ Instructions:
 
 - Use the live investigation results as the primary source of truth.
 - Use the documentation only to explain concepts or recommend fixes.
-- If documentation does not answer the question, say so.
+- If documentation does not answer the question, clearly state that.
 - Never invent Kubernetes information.
-- Keep the answer concise.
+- Keep the answer concise and professional.
 
 Return exactly in this format:
 
 🚨 Incident Analysis
 
 Severity:
+(LOW / MEDIUM / HIGH)
 
 Root Cause:
+(Explain the most likely reason.)
 
 Evidence:
-• ...
+• Bullet point
+• Bullet point
 
 Impact:
+(Explain what could happen.)
 
 Recommended Fix:
-• ...
+• Bullet point
+• Bullet point
 
 Useful kubectl Commands:
-• ...
+• kubectl describe pod <pod-name>
+• kubectl logs <pod-name> --previous
+• kubectl top pod <pod-name>
 `
 
 	answer, err := llm.Ask(prompt)
